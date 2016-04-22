@@ -1,3 +1,4 @@
+// http://cslibrary.stanford.edu/105/LinkedListProblems.pdf
 function SNode(value, next) {
 	if (!arguments.length || value === null)
 		throw new Error('Expecting a value to be passed');
@@ -218,8 +219,61 @@ SLinkedList.prototype = {
 
 		var ret = list.pop();
 		this.addFirst(ret);
+	},
+
+	shuffleMerge: function(list) {
+		if (list.constructor !== this.constructor)
+			throw new Error('Arguments needs to be a LinkedList');
+		
+		if (!list.length)
+			return this;
+
+		var newList = new SLinkedList();
+		var currA = this.head;
+		var currB = list.head;
+		var i = 0; 
+		var j = 0;
+
+		while (currA !== null && currB !== null) {
+			if (!currA) {
+				newList.addLast(currB.value);
+				currB = currB.next;
+				j++;
+			}
+
+			if (!currB) {
+				newList.addLast(currA.value);
+				currA = currA.next;
+				i++;
+			}
+
+			if (i <= j) {
+				newList.addLast(currA.value);
+				currA = currA.next;
+				i++;
+			} else {
+				newList.addLast(currB.value);
+				currB = currB.next;
+				j++;
+			}
+		}
+
+		return newList;
 	}
 };
+
+var lista = new SLinkedList();
+var listb = new SLinkedList();
+
+lista.addLast(1);
+lista.addLast(3);
+lista.addLast(5);
+listb.addLast(2);
+listb.addLast(4);
+listb.addLast(6);
+var nlist = lista.shuffleMerge(listb);
+console.log('n list: ');
+nlist.toString();
 
 var list = new SLinkedList();
 list.addLast('a');
