@@ -207,6 +207,17 @@ SLinkedList.prototype = {
 			prev = curr;
 			curr = curr.next;
 		}
+	},
+
+	moveNode: function(list) {
+		if (list.constructor !== this.constructor)
+			throw new Error('Arguments has to be a LinkedList');
+		
+		if (!list.length)
+			return;
+
+		var ret = list.pop();
+		this.addFirst(ret);
 	}
 };
 
@@ -223,6 +234,20 @@ list.toString();
 //list.toString();
 //list.removeFirst();
 //list.toString();
+
+var a = new SLinkedList();
+var b = new SLinkedList();
+a.addLast(3);
+a.addLast(4);
+a.addLast(5);
+
+b.addLast(0);
+b.addLast(1);
+b.addLast(2);
+
+a.moveNode(b);
+a.toString();
+b.toString();
 
 console.log(list.countValue('a'));
 console.log(list.getNth(3));
@@ -242,7 +267,7 @@ sortedList.toString();
 list.append(sortedList);
 list.toString();
 console.log('remove duplicate');
-list.removeDuplicate();
+list.removeDuplicates();
 list.toString();
 sortedList.toString();
 
