@@ -49,6 +49,9 @@ SLinkedList.prototype = {
 	},
 
 	pop: function() {
+		if (!this.length)
+			throw new Error('List is Empty');
+
 		var ret = this.head.value;
 		this.removeFirst();
 		return ret;
@@ -83,20 +86,23 @@ SLinkedList.prototype = {
 
 	countValue: function(val) {
 		var count = 0;
-		var curr = this.head;
-		if (!this.length)
-			return count;
-		while (curr !== null) {
-			if (curr.value === val) count++;
-			curr = curr.next;
+		if (this.length) {
+			var curr = this.head;
+			while (curr !== null) {
+				if (curr.value === val) count++;
+				curr = curr.next;
+			}
 		}
 		return count;
 	},
 
-	getNth: function(v) {
+	getNth: function(index) {
+		if (!this.length || index > this.length || index < 0)
+			throw new Error('Incorrect index specified');
+
 		var counter = 0;
 		var curr = this.head;
-		while (counter !== v) {
+		while (counter !== index) {
 			curr = curr.next;
 			counter++;
 		}
@@ -126,6 +132,12 @@ SLinkedList.prototype = {
 	sortedInsert: function(value) {
 		if (!value || value < this.head.value) 
 			return;
+		if (this.length === 1) {
+			if (value < this.head) 
+				this.prepend(value);
+			else
+				this.append(value);
+		}
 
 		var curr = this.head;
 		while (curr !== this.tail) {
@@ -134,13 +146,15 @@ SLinkedList.prototype = {
 				var node = new SNode(value);
 				curr.next = node;
 				node.next = next;
-				this.length++;
 			}
 			curr = curr.next;
 		}
+		this.length++;
 	},
 
 	append: function(list) {
+		if (!this.length)
+			throw new Error('Empty list attempting to append another list');
 		var curr = this.head;
 		var counter = 0;
 		this.tail.next = list.head;
@@ -153,6 +167,9 @@ SLinkedList.prototype = {
 	},
 
 	frontBackSplit: function() {
+		if (!this.length)
+			throw new Error('List should have a length of at least 2');
+
 		var a = new SLinkedList();
 		var b = new SLinkedList();
 		var a_counter = 0;
@@ -169,6 +186,27 @@ SLinkedList.prototype = {
 			curr = curr.next;
 		}
 		return [a, b];
+	},
+
+	removeDuplicates: function() {
+		if (this.length < 2)
+			throw new Error('Array needs to have a length of 2 minimum');
+
+		var hash = {};
+		var prev = null;
+		var curr = this.head;
+
+		while (curr !== null) {
+			if (!hash[curr.value])
+				hash[curr.value] = curr.value;
+			else {
+				var next = curr.next;	
+				prev.next = next;
+				this.length--;
+			}
+			prev = curr;
+			curr = curr.next;
+		}
 	}
 };
 
@@ -176,7 +214,7 @@ var list = new SLinkedList();
 list.addLast('a');
 list.addLast('b');
 list.addLast('c');
-//list.addFirst('z');
+list.addFirst('z');
 list.addFirst('x');
 list.addLast('a');
 list.addLast('j');
@@ -202,6 +240,9 @@ sortedList.sortedInsert(10);
 sortedList.toString();
 
 list.append(sortedList);
+list.toString();
+console.log('remove duplicate');
+list.removeDuplicate();
 list.toString();
 sortedList.toString();
 
