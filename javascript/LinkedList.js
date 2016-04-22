@@ -14,7 +14,7 @@ function SLinkedList() {
 SLinkedList.prototype = {
 	constructor: SLinkedList,
 	
-	append: function(val) {
+	addLast: function(val) {
 		var n = new SNode(val);
 		if (!this.length) {
 			this.head = this.tail = n;
@@ -28,7 +28,7 @@ SLinkedList.prototype = {
 		this.length++;
 	}, 
 
-	prepend: function(val) {
+	addFirst: function(val) {
 		var n = new SNode(val);
 		if (!this.length) {
 			this.head = this.tail = n;
@@ -138,17 +138,34 @@ SLinkedList.prototype = {
 			}
 			curr = curr.next;
 		}
+	},
+
+	append: function(list) {
+		var curr = this.head;
+		var counter = 0;
+		this.tail.next = list.head;
+		while (curr.next !== null)
+			curr = curr.next;
+		this.tail = curr;
+
+		curr = this.head;
+		while (curr.next !== null) {
+			curr = curr.next;
+			counter++;
+		}
+		list.head = this.tail = null;
+		this.length = counter;
 	}
 };
 
 var list = new SLinkedList();
-list.append('a');
-list.append('b');
-list.append('c');
-list.prepend('z');
-list.prepend('x');
-list.append('a');
-list.append('j');
+list.addLast('a');
+list.addLast('b');
+list.addLast('c');
+list.addFirst('z');
+list.addFirst('x');
+list.addLast('a');
+list.addLast('j');
 list.toString();
 //list.removeLast();
 //list.toString();
@@ -159,13 +176,17 @@ console.log(list.countValue('a'));
 console.log(list.getNth(3));
 
 var sortedList = new SLinkedList();
-sortedList.append(0);
-sortedList.append(2);
-sortedList.append(5);
-sortedList.append(9);
-sortedList.append(11);
-sortedList.append(15);
+sortedList.addLast(0);
+sortedList.addLast(2);
+sortedList.addLast(5);
+sortedList.addLast(9);
+sortedList.addLast(11);
+sortedList.addLast(15);
 
 sortedList.toString();
 sortedList.sortedInsert(10);
-ortedList.toString();
+sortedList.toString();
+
+list.append(sortedList);
+list.toString();
+sortedList.toString();
