@@ -148,13 +148,27 @@ SLinkedList.prototype = {
 			curr = curr.next;
 		this.tail = curr;
 
-		curr = this.head;
-		while (curr.next !== null) {
-			curr = curr.next;
-			counter++;
-		}
 		list.head = this.tail = null;
-		this.length = counter;
+		this.length = this.length + list.length;
+	},
+
+	frontBackSplit: function() {
+		var a = new SLinkedList();
+		var b = new SLinkedList();
+		var a_counter = 0;
+		var b_counter = 0;
+		var curr = list.head;
+
+		while (a_counter++ < Math.floor(this.length / 2)) {
+			a.addLast(curr.value);
+			curr = curr.next;
+		}
+
+		while (curr !== null) {
+			b.addLast(curr.value);
+			curr = curr.next;
+		}
+		return [a, b];
 	}
 };
 
@@ -162,7 +176,7 @@ var list = new SLinkedList();
 list.addLast('a');
 list.addLast('b');
 list.addLast('c');
-list.addFirst('z');
+//list.addFirst('z');
 list.addFirst('x');
 list.addLast('a');
 list.addLast('j');
@@ -190,3 +204,7 @@ sortedList.toString();
 list.append(sortedList);
 list.toString();
 sortedList.toString();
+
+var lists = list.frontBackSplit();
+lists[0].toString();
+lists[1].toString();
