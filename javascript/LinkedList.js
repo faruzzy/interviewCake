@@ -1,7 +1,8 @@
 function SNode(value, next) {
-	if (!arguments.length) 
-		return;
-	this.value = value ? value : null;
+	if (!arguments.length || value === null)
+		throw new Error('Expecting a value to be passed');
+
+	this.value = value;
 	this.next = next ? next : null;
 }
 
@@ -116,7 +117,7 @@ SLinkedList.prototype = {
 
 			var w = curr.next;
 			var node = new SNode(value);
-			node.next = w
+			node.next = w;
 			curr.next = node;
 		}
 		this.length++;
@@ -128,7 +129,7 @@ SLinkedList.prototype = {
 
 		var curr = this.head;
 		while (curr !== this.tail) {
-			if (value > curr.value && value < curr.next) {
+			if (value > curr.value && value < curr.next.value) {
 				var next = curr.next;
 				var node = new SNode(value);
 				curr.next = node;
@@ -145,7 +146,7 @@ list.append('a');
 list.append('b');
 list.append('c');
 list.prepend('z');
-list.prepend('x')
+list.prepend('x');
 list.append('a');
 list.append('j');
 list.toString();
@@ -156,3 +157,15 @@ list.toString();
 
 console.log(list.countValue('a'));
 console.log(list.getNth(3));
+
+var sortedList = new SLinkedList();
+sortedList.append(0);
+sortedList.append(2);
+sortedList.append(5);
+sortedList.append(9);
+sortedList.append(11);
+sortedList.append(15);
+
+sortedList.toString();
+sortedList.sortedInsert(10);
+ortedList.toString();
