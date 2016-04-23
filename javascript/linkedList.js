@@ -16,7 +16,7 @@ SLinkedList.prototype = {
 	constructor: SLinkedList,
 	
 	add: function(val) {
-		this.addLast(val);
+		this.add(val);
 	},
 
 	addLast: function(val) {
@@ -269,24 +269,24 @@ SLinkedList.prototype = {
 var lista = new SLinkedList();
 var listb = new SLinkedList();
 
-lista.addLast(1);
-lista.addLast(3);
-lista.addLast(5);
-listb.addLast(2);
-listb.addLast(4);
-listb.addLast(6);
+lista.add(1);
+lista.add(3);
+lista.add(5);
+listb.add(2);
+listb.add(4);
+listb.add(6);
 var nlist = lista.shuffleMerge(listb);
 console.log('n list: ');
 nlist.toString();
 
 var list = new SLinkedList();
-list.addLast('a');
-list.addLast('b');
-list.addLast('c');
+list.add('a');
+list.add('b');
+list.add('c');
 list.addFirst('z');
 list.addFirst('x');
-list.addLast('a');
-list.addLast('j');
+list.add('a');
+list.add('j');
 list.toString();
 //list.removeLast();
 //list.toString();
