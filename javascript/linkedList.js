@@ -15,6 +15,10 @@ function SLinkedList() {
 SLinkedList.prototype = {
 	constructor: SLinkedList,
 	
+	add: function(val) {
+		this.addLast(val);
+	},
+
 	addLast: function(val) {
 		var n = new SNode(val);
 		if (!this.length) {
@@ -178,12 +182,12 @@ SLinkedList.prototype = {
 		var curr = list.head;
 
 		while (a_counter++ < Math.floor(this.length / 2)) {
-			a.addLast(curr.value);
+			a.add(curr.value);
 			curr = curr.next;
 		}
 
 		while (curr !== null) {
-			b.addLast(curr.value);
+			b.add(curr.value);
 			curr = curr.next;
 		}
 		return [a, b];
@@ -236,23 +240,23 @@ SLinkedList.prototype = {
 
 		while (currA !== null && currB !== null) {
 			if (!currA) {
-				newList.addLast(currB.value);
+				newList.add(currB.value);
 				currB = currB.next;
 				j++;
 			}
 
 			if (!currB) {
-				newList.addLast(currA.value);
+				newList.add(currA.value);
 				currA = currA.next;
 				i++;
 			}
 
 			if (i <= j) {
-				newList.addLast(currA.value);
+				newList.add(currA.value);
 				currA = currA.next;
 				i++;
 			} else {
-				newList.addLast(currB.value);
+				newList.add(currB.value);
 				currB = currB.next;
 				j++;
 			}
@@ -291,13 +295,13 @@ list.toString();
 
 var a = new SLinkedList();
 var b = new SLinkedList();
-a.addLast(3);
-a.addLast(4);
-a.addLast(5);
+a.add(3);
+a.add(4);
+a.add(5);
 
-b.addLast(0);
-b.addLast(1);
-b.addLast(2);
+b.add(0);
+b.add(1);
+b.add(2);
 
 a.moveNode(b);
 a.toString();
@@ -307,12 +311,12 @@ console.log(list.countValue('a'));
 console.log(list.getNth(3));
 
 var sortedList = new SLinkedList();
-sortedList.addLast(0);
-sortedList.addLast(2);
-sortedList.addLast(5);
-sortedList.addLast(9);
-sortedList.addLast(11);
-sortedList.addLast(15);
+sortedList.add(0);
+sortedList.add(2);
+sortedList.add(5);
+sortedList.add(9);
+sortedList.add(11);
+sortedList.add(15);
 
 sortedList.toString();
 sortedList.sortedInsert(10);
