@@ -16,7 +16,7 @@ SLinkedList.prototype = {
 	constructor: SLinkedList,
 	
 	add: function(val) {
-		this.add(val);
+		this.addLast(val);
 	},
 
 	addLast: function(val) {
@@ -232,34 +232,23 @@ SLinkedList.prototype = {
 		if (!list.length)
 			return this;
 
-		var newList = new SLinkedList();
-		var currA = this.head;
-		var currB = list.head;
-		var i = 0; 
-		var j = 0;
+		var newList = new SLinkedList(),
+			currA = this.head,
+			currB = list.head,
+			len = (this.length <= list.length) ? list.length : this.length, 
+			i = 0; 
 
-		while (currA !== null && currB !== null) {
-			if (!currA) {
-				newList.add(currB.value);
-				currB = currB.next;
-				j++;
-			}
-
-			if (!currB) {
+		while (i < len) {
+			if (currA) {
 				newList.add(currA.value);
 				currA = currA.next;
-				i++;
 			}
 
-			if (i <= j) {
-				newList.add(currA.value);
-				currA = currA.next;
-				i++;
-			} else {
+			if (currB) {
 				newList.add(currB.value);
 				currB = currB.next;
-				j++;
 			}
+			i++;
 		}
 
 		return newList;
