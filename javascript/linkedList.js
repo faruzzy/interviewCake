@@ -178,7 +178,6 @@ SLinkedList.prototype = {
 		var a = new SLinkedList();
 		var b = new SLinkedList();
 		var a_counter = 0;
-		var b_counter = 0;
 		var curr = list.head;
 
 		while (a_counter++ < Math.floor(this.length / 2)) {
@@ -252,6 +251,47 @@ SLinkedList.prototype = {
 		}
 
 		return newList;
+	},
+
+	mergeSort: function() {
+		function merge(a, b) {
+			var n = new SLinkedList(),
+				currA = a.head,
+				currB = b.head,
+				len = a.length + b.length;
+
+			while (n < len) {
+				if (!currB) {
+					n.add(currA.value);
+					currA = currA.next;
+				}
+
+				if (!currA) {
+					n.add(currB.value);
+					currB = currB.next;
+				}
+
+				if (currA && currB && currA.value < currB.value) {
+					n.add(currA.value);
+					currA = currA.next;
+				}
+				
+				if (currA && currB && currB.value < currA.value) {
+					n.add(currB.value);
+					currB = currB.next;
+				}
+			}
+		}
+
+		//recursive step
+		if (this.length > 1) {
+			var p = this.frontBackSplit(),
+				left = merge(p[0]),
+				right = merge(p[1]);
+			return merge(left, right);
+		}
+
+		return list;
 	}
 };
 
@@ -321,3 +361,20 @@ sortedList.toString();
 var lists = list.frontBackSplit();
 lists[0].toString();
 lists[1].toString();
+
+var unsortedList = new SLinkedList();
+unsortedList.add(10);
+unsortedList.add(1);
+unsortedList.add(4);
+unsortedList.add(3);
+unsortedList.add(9);
+unsortedList.add(2);
+unsortedList.add(7);
+unsortedList.add(5);
+unsortedList.add(2);
+unsortedList.add(8);
+unsortedList.add(8);
+
+unsortedList.mergeSort();
+console.log('unsorted list:');
+console.log(unsortedList);
