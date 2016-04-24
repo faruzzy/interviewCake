@@ -308,7 +308,7 @@ SLinkedList.prototype = {
 					currB = currB.next;
 				}
 
-				//if (currA && currB) {
+				if (currA && currB) {
 					if (currA.value < currB.value) {
 						n.add(currA.value);
 						currA = currA.next;
@@ -316,7 +316,7 @@ SLinkedList.prototype = {
 						n.add(currB.value);
 						currB = currB.next;
 					}
-				//}
+				}
 			}
 
 			return n;
@@ -334,6 +334,33 @@ SLinkedList.prototype = {
 		}
 
 		return list;
+	},
+
+	unique1: function(list) {
+		if (list.constructor !== this.constructor)
+			throw new Error('Expecting a LinkedList as an argument');
+
+		var currA = this.head;
+		var hash = {};
+		var n = new SLinkedList();
+		while (currA !== null) {
+			if (!hash[currA.value]) {
+				hash[currA.value] = currA.value;
+				n.add(currA.value);
+			}
+			currA = currA.next;
+		}
+
+		var currB = list.head;
+		while (currB !== null) {
+			if (!hash[currB.value]) {
+				hash[currB.value] = currB.value;
+				n.add(currB.value);
+			}
+			currB = currB.next;
+		}
+
+		return n;
 	}
 };
 
@@ -416,6 +443,19 @@ unsortedList.add(5);
 unsortedList.add(2);
 unsortedList.add(8);
 
-unsortedList.mergeSort();
+//unsortedList.mergeSort();
 console.log('unsorted list:');
 unsortedList.toString();
+
+var d1 = new SLinkedList();
+d1.add('a');
+d1.add('b');
+d1.add('b');
+d1.add('a');
+var d2 = new SLinkedList();
+d2.add('x');
+d2.add('y');
+d2.add('z');
+d2.add('y');
+var nn = d1.unique1(d2);
+nn.toString();
