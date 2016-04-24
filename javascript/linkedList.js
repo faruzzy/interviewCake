@@ -253,14 +253,51 @@ SLinkedList.prototype = {
 		return newList;
 	},
 
-	mergeSort: function() {
+	mergeSort: function(linkedList) {
+		var self = this;
+		function slice(list, start, end) {
+			if (list.constructor !== self.constructor) 
+				throw new Error('Expecting a linked list');
+
+			if (list.length < 2) 
+				throw new Error('LinkedList needs to have at least 2 elements');
+
+			var nlist = new SLinkedList(),
+				counter = 0,
+				curr = list.head;
+
+			if (start > list.length || start < 0)
+				return;
+
+			// we are not splitting from the beginning
+			if (counter !== start)
+				while (counter < start) {
+					curr = curr.next;
+					counter++;
+				}
+			
+			if (typeof(end) === 'undefined' || end > list.length) {
+				while (curr !== null) {
+					nlist.add(curr.value);
+					curr = curr.next;
+				}
+			} else {
+				while (counter++ < (end)) {
+					nlist.add(curr.value);
+					curr = curr.next;
+				}
+			}
+
+			return nlist;
+		}
+
 		function merge(a, b) {
 			var n = new SLinkedList(),
 				currA = a.head,
 				currB = b.head,
 				len = a.length + b.length;
 
-			while (n < len) {
+			while (n.length < len) {
 				if (!currB) {
 					n.add(currA.value);
 					currA = currA.next;
@@ -271,23 +308,28 @@ SLinkedList.prototype = {
 					currB = currB.next;
 				}
 
-				if (currA && currB && currA.value < currB.value) {
-					n.add(currA.value);
-					currA = currA.next;
-				}
-				
-				if (currA && currB && currB.value < currA.value) {
-					n.add(currB.value);
-					currB = currB.next;
-				}
+				//if (currA && currB) {
+					if (currA.value < currB.value) {
+						n.add(currA.value);
+						currA = currA.next;
+					} else {
+						n.add(currB.value);
+						currB = currB.next;
+					}
+				//}
 			}
+
+			return n;
 		}
 
 		//recursive step
 		if (this.length > 1) {
-			var p = this.frontBackSplit(),
-				left = merge(p[0]),
-				right = merge(p[1]);
+			var mid = this.length >> 1,
+				left = slice(this,  0, mid),
+				right = slice(this, mid);
+
+			left = left.mergeSort();
+			right = right.mergeSort();
 			return merge(left, right);
 		}
 
@@ -373,8 +415,7 @@ unsortedList.add(7);
 unsortedList.add(5);
 unsortedList.add(2);
 unsortedList.add(8);
-unsortedList.add(8);
 
 unsortedList.mergeSort();
 console.log('unsorted list:');
-console.log(unsortedList);
+unsortedList.toString();
