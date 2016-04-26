@@ -253,89 +253,6 @@ SLinkedList.prototype = {
 		return newList;
 	},
 
-	mergeSort: function(linkedList) {
-		var self = this;
-		function slice(list, start, end) {
-			if (list.constructor !== self.constructor) 
-				throw new Error('Expecting a linked list');
-
-			if (list.length < 2) 
-				throw new Error('LinkedList needs to have at least 2 elements');
-
-			var nlist = new SLinkedList(),
-				counter = 0,
-				curr = list.head;
-
-			if (start > list.length || start < 0)
-				return;
-
-			// we are not splitting from the beginning
-			if (counter !== start)
-				while (counter < start) {
-					curr = curr.next;
-					counter++;
-				}
-			
-			if (typeof(end) === 'undefined' || end > list.length) {
-				while (curr !== null) {
-					nlist.add(curr.value);
-					curr = curr.next;
-				}
-			} else {
-				while (counter++ < (end)) {
-					nlist.add(curr.value);
-					curr = curr.next;
-				}
-			}
-
-			return nlist;
-		}
-
-		function merge(a, b) {
-			var n = new SLinkedList(),
-				currA = a.head,
-				currB = b.head,
-				len = a.length + b.length;
-
-			while (n.length < len) {
-				if (!currB) {
-					n.add(currA.value);
-					currA = currA.next;
-				}
-
-				if (!currA) {
-					n.add(currB.value);
-					currB = currB.next;
-				}
-
-				if (currA && currB) {
-					if (currA.value < currB.value) {
-						n.add(currA.value);
-						currA = currA.next;
-					} else {
-						n.add(currB.value);
-						currB = currB.next;
-					}
-				}
-			}
-
-			return n;
-		}
-
-		//recursive step
-		if (this.length > 1) {
-			var mid = this.length >> 1,
-				left = slice(this,  0, mid),
-				right = slice(this, mid);
-
-			left = left.mergeSort();
-			right = right.mergeSort();
-			return merge(left, right);
-		}
-
-		return list;
-	},
-
 	unique1: function(list) {
 		if (list.constructor !== this.constructor)
 			throw new Error('Expecting a LinkedList as an argument');
@@ -361,7 +278,140 @@ SLinkedList.prototype = {
 		}
 
 		return n;
+	},
+
+	/*mergeSort: function() {
+		function slice(list, start, end) {
+			//if (list.constructor !== SLinkedList)
+				//throw new Error('Expecting a linked list');
+
+			var nlist = new SLinkedList(),
+				counter = 0,
+				curr = list.head;
+
+			if (start > list.length || start < 0)
+				return;
+
+			if (counter !== start) { // we are not splitting from the beginning
+				while (counter < start) {
+					curr = curr.next;
+					counter++;
+				}
+			}
+			
+			if (typeof(end) === 'undefined' || end > list.length) {
+				while (curr !== null) {
+					nlist.add(curr.value);
+					curr = curr.next;
+				}
+			} else {
+				while (counter++ < (end)) {
+					nlist.add(curr.value);
+					curr = curr.next;
+				}
+			}
+
+			return nlist;
+		}
+
+		function merge(a, b) {
+			var n = new SLinkedList(),
+				curr_a = a.head,
+				curr_b = b.head,
+				ia     = 0,
+				ib     = 0;
+
+			while (ia < a.length && ib < b.length) {
+				if (curr_a.value < curr_b.value) {
+					n.add(curr_a.value);
+					curr_a = curr_a.next;
+					ia++;
+				} else {
+					n.add(curr_b.value);
+					curr_b = curr_b.next;
+					ib++;
+				}
+			}
+			n.add( curr_a ? curr_a.value : curr_b.value);
+			return n;
+		}
+
+		//recursive step
+		if (this.length > 1) {
+			var mid = this.length >> 1,
+				left = this.mergeSort(slice(this, 0, mid)),
+				right = this.mergeSort(slice(this, mid));
+
+			return merge(left, right);
+		}
+
+		return this;
+	}*/
+};
+
+var mergeSort = function(linkedList) {
+	function slice(list, start, end) {
+		var nlist = new SLinkedList(),
+			counter = 0,
+			curr = list.head;
+
+		if (start > list.length || start < 0)
+			return;
+
+		if (counter !== start) { // we are not splitting from the beginning
+			while (counter < start) {
+				curr = curr.next;
+				counter++;
+			}
+		}
+		
+		if (typeof(end) === 'undefined' || end > list.length) {
+			while (curr !== null) {
+				nlist.add(curr.value);
+				curr = curr.next;
+			}
+		} else {
+			while (counter++ < (end)) {
+				nlist.add(curr.value);
+				curr = curr.next;
+			}
+		}
+
+		return nlist;
 	}
+
+	function merge(a, b) {
+		var n = new SLinkedList(),
+			curr_a = a.head,
+			curr_b = b.head,
+			ia     = 0,
+			ib     = 0;
+
+		while (ia < a.length && ib < b.length) {
+			if (curr_a.value < curr_b.value) {
+				n.add(curr_a.value);
+				curr_a = curr_a.next;
+				ia++;
+			} else {
+				n.add(curr_b.value);
+				curr_b = curr_b.next;
+				ib++;
+			}
+		}
+		n.add( curr_a ? curr_a.value : curr_b.value);
+		return n;
+	}
+
+	//recursive step
+	if (linkedList.length > 1) {
+		var mid = linkedList.length >> 1,
+			left = mergeSort(slice(linkedList, 0, mid)),
+			right = mergeSort(slice(linkedList, mid));
+
+		return merge(left, right);
+	}
+
+	return linkedList;
 };
 
 var lista = new SLinkedList();
@@ -438,14 +488,15 @@ unsortedList.add(4);
 unsortedList.add(3);
 unsortedList.add(9);
 unsortedList.add(2);
+unsortedList.add(6);
 unsortedList.add(7);
 unsortedList.add(5);
-unsortedList.add(2);
 unsortedList.add(8);
 
-//unsortedList.mergeSort();
-console.log('unsorted list:');
-unsortedList.toString();
+var nn = mergeSort(unsortedList);
+//var nn = unsortedList.mergeSort();
+console.log('unsorted list now sorted:');
+nn.toString();
 
 var d1 = new SLinkedList();
 d1.add('a');
@@ -457,5 +508,5 @@ d2.add('x');
 d2.add('y');
 d2.add('z');
 d2.add('y');
-var nn = d1.unique1(d2);
-nn.toString();
+//var nn = d1.unique2(d2);
+//nn.toString();
